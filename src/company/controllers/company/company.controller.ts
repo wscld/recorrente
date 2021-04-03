@@ -19,9 +19,4 @@ export class CompanyController {
     findAll() {
         return this.companyService.findAll();
     }
-
-    @Get('create')
-    createTest() {
-        return this.companyService.create();
-    }
 }
