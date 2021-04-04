@@ -17,6 +17,9 @@ export class User {
     @Prop()
     password: string;
 
+    @Prop()
+    refreshToken: string;
+
     @Prop({ type: Types.Array })
     productIds: Types.ObjectId[];
 }
