@@ -12,8 +12,7 @@ export class CompanyService {
     }
 
     find(id: string) {
-        const idObj = new Types.ObjectId(id);
-        return this.companyModel.findOne({ _id: idObj }).lean().exec();
+        return this.companyModel.findOne({ _id: id }).lean().exec();
     }
 
     findAll() {

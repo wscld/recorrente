@@ -21,7 +21,7 @@ export class User {
     refreshToken: string;
 
     @Prop({ type: Types.Array })
-    productIds: Types.ObjectId[];
+    productIds: string[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

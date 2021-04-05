@@ -11,8 +11,11 @@ export class Product {
     @Prop()
     value: number;
 
-    @Prop({ type: Types.ObjectId })
-    companyId: Types.ObjectId;
+    @Prop()
+    companyId: string;
+
+    @Prop()
+    userId: string;
 
     @Prop()
     image: string;
