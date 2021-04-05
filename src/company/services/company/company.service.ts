@@ -19,4 +19,7 @@ export class CompanyService {
         return this.companyModel.find().lean().exec();
     }
 
+    findMultiple(ids: string[]) {
+        return this.companyModel.find({ $and: [{ _id: { $in: ids } }] }).lean().exec();
+    }
 }

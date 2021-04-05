@@ -1,13 +1,18 @@
 import { Injectable, Post } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+import { CompanyService } from 'src/company/services/company/company.service';
 import { ProductService } from 'src/product/services/product/product.service';
 import { User, UserDocument } from 'src/user/schemas/user.schema';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectModel(User.name) private userModel: Model<UserDocument>, private productService: ProductService) { }
+    constructor(
+        @InjectModel(User.name) private userModel: Model<UserDocument>,
+        private productService: ProductService,
+        private companyService: CompanyService
+    ) { }
 
     async updateRefreshToken(id: string) {
         const newToken = uuidv4();
@@ -34,6 +39,13 @@ export class UserService {
     async findUserProducts(id: string) {
         const products = await (await this.userModel.findById(id).lean().exec()).productIds;
         return await this.productService.findMultiple(products, id);
+    }
+
+    async findUserCompanies(id: string) {
+        const productIds = (await this.userModel.findById(id).lean().exec()).productIds;
+        const products = await this.productService.findMultiple(productIds, id);
+        const companyIds = products.map(p => p.companyId);
+        return this.companyService.findMultiple(companyIds);
     }
 
     async addUserProduct(id: string, product: any) {

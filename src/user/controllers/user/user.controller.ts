@@ -14,8 +14,8 @@ export class UserController {
     }
     @UseGuards(JwtAuthGuard)
     @Get('companies')
-    getUserCompanies() {
-        return '';
+    getUserCompanies(@Request() req) {
+        return this.userService.findUserCompanies(req.user._id);
     }
 
     @UseGuards(JwtAuthGuard)
