@@ -36,6 +36,12 @@ export class UserService {
         return await this.userModel.findById(id).lean().exec();
     }
 
+
+    async create(user: User) {
+        const newUser = new this.userModel(user);
+        return newUser.save();
+    }
+
     async findUserProducts(id: string) {
         const products = await (await this.userModel.findById(id).lean().exec()).productIds;
         return await this.productService.findMultiple(products, id);

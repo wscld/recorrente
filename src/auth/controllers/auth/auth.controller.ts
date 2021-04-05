@@ -12,6 +12,11 @@ export class AuthController {
         return this.authService.login(req.user);
     }
 
+    @Post('signup')
+    async signup(@Body() body: any) {
+        return this.authService.signUp(body);
+    }
+
     @Post('refreshtoken')
     async refreshToken(@Request() req, @Body() body: any) {
         const token = req.headers.authorization.replace('Bearer ','');
