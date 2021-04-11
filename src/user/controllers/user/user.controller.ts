@@ -10,12 +10,12 @@ export class UserController {
     @UseGuards(JwtAuthGuard)
     @Get('products')
     getUserProducts(@Request() req) {
-        return this.userService.findUserProducts(req.user._id);
+        return this.userService.findProducts(req.user._id);
     }
     @UseGuards(JwtAuthGuard)
     @Get('companies')
     getUserCompanies(@Request() req) {
-        return this.userService.findUserCompanies(req.user._id);
+        return this.userService.findCompanies(req.user._id);
     }
 
     @UseGuards(JwtAuthGuard)
@@ -27,13 +27,13 @@ export class UserController {
     @UseGuards(JwtAuthGuard)
     @Post('product')
     createProduct(@Request() req, @Body() body) {
-        return this.userService.addUserProduct(req.user._id, body);
+        return this.userService.addProduct(req.user._id, body);
     }
 
     @UseGuards(JwtAuthGuard)
     @Delete('product')
     deleteProduct(@Request() req, @Body() body) {
-        return this.userService.removeUserProduct(req.user._id, body);
+        return this.userService.removeProduct(req.user._id, body);
     }
 }
 

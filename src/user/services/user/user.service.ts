@@ -28,11 +28,11 @@ export class UserService {
         return user.refreshToken;
     }
 
-    async findUser(usernameOrEmail: string) {
+    async find(usernameOrEmail: string) {
         return await this.userModel.findOne().or([{ username: usernameOrEmail }, { email: usernameOrEmail }]).lean().exec();
     }
 
-    async findUserById(id: string) {
+    async findById(id: string) {
         return await this.userModel.findById(id).lean().exec();
     }
 
@@ -42,19 +42,19 @@ export class UserService {
         return newUser.save();
     }
 
-    async findUserProducts(id: string) {
+    async findProducts(id: string) {
         const products = await (await this.userModel.findById(id).lean().exec()).productIds;
         return await this.productService.findMultiple(products, id);
     }
 
-    async findUserCompanies(id: string) {
+    async findCompanies(id: string) {
         const productIds = (await this.userModel.findById(id).lean().exec()).productIds;
         const products = await this.productService.findMultiple(productIds, id);
         const companyIds = products.map(p => p.companyId);
         return this.companyService.findMultiple(companyIds);
     }
 
-    async addUserProduct(id: string, product: any) {
+    async addProduct(id: string, product: any) {
         const p = await this.productService.create(product, id);
         const user = await this.userModel.findById(id).exec();
         if (user.productIds) {
@@ -65,7 +65,7 @@ export class UserService {
         return user.save();
     }
 
-    async removeUserProduct(id: string, productId: string) {
+    async removeProduct(id: string, productId: string) {
         const user = await this.userModel.findById(id).exec();
         user.productIds = user.productIds.filter(pid => pid !== productId);
         this.productService.remove(productId, id);

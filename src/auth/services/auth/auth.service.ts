@@ -9,7 +9,7 @@ export class AuthService {
     constructor(private userServie: UserService, private jwtService: JwtService) { }
 
     async validate(usernameOrEmail: string, password: string) {
-        const user = await this.userServie.findUser(usernameOrEmail);
+        const user = await this.userServie.find(usernameOrEmail);
         if (user && user.password === password) {
             user.password = null;
             return user;
@@ -29,7 +29,7 @@ export class AuthService {
 
     async validateRefresh(token: string, refreshToken: string) {
         const payload = this.jwtService.decode(token) as any;
-        const user = await this.userServie.findUserById(payload._id);
+        const user = await this.userServie.findById(payload._id);
         if (user && refreshToken && this.isTokenExpired(token)) {
             const payload = { email: user.email, sub: user._id };
             if (user && refreshToken === user.refreshToken) {
