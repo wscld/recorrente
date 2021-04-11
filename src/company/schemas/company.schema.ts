@@ -6,9 +6,6 @@ export type CompanyDocument = Company & Document;
 @Schema()
 export class Company{
     @Prop()
-    id: number;
-
-    @Prop()
     name:string;
 
     @Prop()

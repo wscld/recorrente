@@ -1,4 +1,39 @@
-import { Controller } from '@nestjs/common';
+import { Body, Delete, Get, Put } from '@nestjs/common';
+import { Controller, Request, Post, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { ProductService } from 'src/product/services/product/product.service';
+import { UserService } from 'src/user/services/user/user.service';
 
 @Controller('user')
-export class UserController {}
+export class UserController {
+    constructor(private userService: UserService, private productService: ProductService) { }
+    @UseGuards(JwtAuthGuard)
+    @Get('products')
+    getUserProducts(@Request() req) {
+        return this.userService.findProducts(req.user._id);
+    }
+    @UseGuards(JwtAuthGuard)
+    @Get('companies')
+    getUserCompanies(@Request() req) {
+        return this.userService.findCompanies(req.user._id);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Put('product')
+    updateProduct(@Request() req, @Body() body) {
+        return this.productService.update(body, req.user._id);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('product')
+    createProduct(@Request() req, @Body() body) {
+        return this.userService.addProduct(req.user._id, body);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Delete('product')
+    deleteProduct(@Request() req, @Body() body) {
+        return this.userService.removeProduct(req.user._id, body);
+    }
+}
+
